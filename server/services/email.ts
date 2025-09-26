@@ -1,47 +1,65 @@
-import { MailService } from '@sendgrid/mail';
+import nodemailer from 'nodemailer';
 
-let mailService: MailService | null = null;
+let transporter: nodemailer.Transporter | null = null;
 
-if (process.env.SENDGRID_API_KEY) {
-  mailService = new MailService();
-  mailService.setApiKey(process.env.SENDGRID_API_KEY);
+// Initialize Gmail SMTP transporter
+if (process.env.GMAIL_USER && process.env.GMAIL_APP_PASSWORD) {
+  transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: process.env.GMAIL_USER,
+      pass: process.env.GMAIL_APP_PASSWORD,
+    },
+  });
 } else {
-  console.warn("SENDGRID_API_KEY not provided - email functionality will be disabled");
+  console.warn("Gmail credentials not provided - email functionality will be disabled");
+  console.warn("Required: GMAIL_USER (your gmail address) and GMAIL_APP_PASSWORD (app-specific password)");
 }
 
 interface EmailParams {
   to: string | string[];
-  from: string;
+  from?: string;
   subject: string;
   text?: string;
   html?: string;
+  attachments?: Array<{
+    filename: string;
+    path?: string;
+    content?: Buffer | string;
+    contentType?: string;
+  }>;
 }
 
 export async function sendEmail(params: EmailParams): Promise<boolean> {
-  if (!mailService) {
+  if (!transporter) {
     console.warn('Email service not available - skipping email send');
     return false;
   }
   
   try {
-    const emailData: any = {
+    const mailOptions: nodemailer.SendMailOptions = {
+      from: params.from || process.env.GMAIL_USER,
       to: params.to,
-      from: params.from,
       subject: params.subject,
     };
     
     if (params.text) {
-      emailData.text = params.text;
+      mailOptions.text = params.text;
     }
     
     if (params.html) {
-      emailData.html = params.html;
+      mailOptions.html = params.html;
+    }
+
+    if (params.attachments) {
+      mailOptions.attachments = params.attachments;
     }
     
-    await mailService.send(emailData);
+    const info = await transporter.sendMail(mailOptions);
+    console.log('Email sent successfully:', info.messageId);
     return true;
   } catch (error) {
-    console.error('SendGrid email error:', error);
+    console.error('Gmail email error:', error);
     return false;
   }
 }
@@ -64,7 +82,7 @@ export async function sendOrderConfirmationEmail(
 
   return sendEmail({
     to: customerEmail,
-    from: process.env.FROM_EMAIL || 'giorgi.natsvlishvili@geolab.edu.ge',
+    from: process.env.GMAIL_USER,
     subject: georgianSubject,
     html: georgianHtml,
   });
@@ -329,7 +347,7 @@ export async function sendOrderNotificationEmail(
 
   return sendEmail({
     to: adminEmails,
-    from: process.env.FROM_EMAIL || 'giorgi.natsvlishvili@geolab.edu.ge',
+    from: process.env.GMAIL_USER,
     subject,
     html,
   });
