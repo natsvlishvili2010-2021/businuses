@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertOrderSchema, updateOrderSchema } from "@shared/schema";
+import { insertOrderSchema, updateOrderSchema, type AttachedFile } from "@shared/schema";
 import { sendOrderConfirmationEmail, sendOrderNotificationEmail } from "./services/email";
 import { sendOrderNotificationToSlack } from "./services/slack";
 import multer from "multer";
@@ -31,7 +31,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // Handle file uploads
       const files = req.files as Express.Multer.File[];
-      const attachedFiles = files?.map(file => ({
+      const attachedFiles: AttachedFile[] = files?.map(file => ({
         originalName: file.originalname,
         filename: file.filename,
         path: file.path,
@@ -41,7 +41,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       const order = await storage.createOrder({
         ...orderData,
-        attachedFiles: attachedFiles as any,
+        attachedFiles,
       });
 
       // Send notifications

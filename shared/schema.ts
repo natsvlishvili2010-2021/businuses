@@ -3,6 +3,15 @@ import { pgTable, text, varchar, timestamp, jsonb, pgEnum } from "drizzle-orm/pg
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
+// Define interface for attached files
+export interface AttachedFile {
+  originalName: string;
+  filename: string;
+  path: string;
+  size: number;
+  mimetype: string;
+}
+
 export const users = pgTable("users", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   username: text("username").notNull().unique(),
