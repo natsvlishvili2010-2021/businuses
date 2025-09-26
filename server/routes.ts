@@ -48,7 +48,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       try {
         await Promise.all([
           sendOrderConfirmationEmail(order.email, order.fullName, order.orderId),
-          sendOrderNotificationEmail(process.env.ADMIN_EMAIL || 'admin@n8n-georgia.com', order),
+          sendOrderNotificationEmail(['svimonishvilitoka@gmail.com', 'giorginatsvlishvili2010@gmail.com'], order),
           sendOrderNotificationToSlack(order)
         ]);
       } catch (notificationError) {

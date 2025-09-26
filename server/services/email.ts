@@ -10,7 +10,7 @@ if (process.env.SENDGRID_API_KEY) {
 }
 
 interface EmailParams {
-  to: string;
+  to: string | string[];
   from: string;
   subject: string;
   text?: string;
@@ -24,13 +24,21 @@ export async function sendEmail(params: EmailParams): Promise<boolean> {
   }
   
   try {
-    await mailService.send({
+    const emailData: any = {
       to: params.to,
       from: params.from,
       subject: params.subject,
-      text: params.text,
-      html: params.html,
-    });
+    };
+    
+    if (params.text) {
+      emailData.text = params.text;
+    }
+    
+    if (params.html) {
+      emailData.html = params.html;
+    }
+    
+    await mailService.send(emailData);
     return true;
   } catch (error) {
     console.error('SendGrid email error:', error);
@@ -63,7 +71,7 @@ export async function sendOrderConfirmationEmail(
 }
 
 export async function sendOrderNotificationEmail(
-  adminEmail: string,
+  adminEmails: string | string[],
   order: any
 ): Promise<boolean> {
   const subject = `New Order Received - ${order.orderId}`;
@@ -79,7 +87,7 @@ export async function sendOrderNotificationEmail(
   `;
 
   return sendEmail({
-    to: adminEmail,
+    to: adminEmails,
     from: process.env.FROM_EMAIL || 'system@n8n-georgia.com',
     subject,
     html,
