@@ -2,7 +2,8 @@ import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { georgianContent } from "@/lib/georgian-content";
-import { MapPin, Phone, Mail } from "lucide-react";
+import { MapPin, Phone, Mail, User } from "lucide-react";
+import giorgiPhoto from "@assets/WhatsApp Image 2025-08-01 at 23.37.17_17286ac2 (29)_1758894082230.jpg";
 
 export default function Contact() {
   const handleWhatsAppClick = () => {
@@ -136,6 +137,82 @@ export default function Contact() {
                       data-testid="google-maps"
                     ></iframe>
                   </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Team Members Section */}
+      <section className="py-20 bg-muted/30">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6 font-firago">
+              ჩვენი გუნდი
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto font-firago">
+              გაიცანით ჩვენი გუნდის წევრები, რომლებიც მზად არიან დაგეხმარონ თქვენი ავტომატიზაციის საჭიროებებში
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {/* Giorgi Natsvlishvili */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              viewport={{ once: true }}
+            >
+              <Card className="glass-card card-hover h-full">
+                <CardContent className="p-6 text-center">
+                  <div className="mb-6">
+                    <img 
+                      src={giorgiPhoto} 
+                      alt="გიორგი ნაცვლიშვილი"
+                      className="w-32 h-32 rounded-full mx-auto object-cover border-4 border-primary/20"
+                      data-testid="img-giorgi-photo"
+                    />
+                  </div>
+                  <h3 className="text-xl font-semibold text-foreground mb-2 font-firago">
+                    გიორგი ნაცვლიშვილი
+                  </h3>
+                  
+                  <div className="space-y-3 mt-4">
+                    <div className="flex items-center justify-center space-x-3 text-muted-foreground">
+                      <Phone className="w-4 h-4" />
+                      <span className="font-firago" data-testid="text-giorgi-phone">574099951</span>
+                    </div>
+                    <div className="flex items-center justify-center space-x-3 text-muted-foreground">
+                      <Mail className="w-4 h-4" />
+                      <span className="font-firago text-sm" data-testid="text-giorgi-email">giorginatsvlishvili2010@gmail.com</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+
+            {/* Second team member placeholder for future */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              viewport={{ once: true }}
+            >
+              <Card className="glass-card card-hover h-full border-dashed border-2 border-muted-foreground/20">
+                <CardContent className="p-6 text-center flex flex-col items-center justify-center h-full min-h-[300px]">
+                  <div className="w-16 h-16 bg-muted-foreground/10 rounded-full flex items-center justify-center mb-4">
+                    <User className="w-8 h-8 text-muted-foreground/40" />
+                  </div>
+                  <p className="text-muted-foreground/60 font-firago">
+                    მალე დაემატება<br/>ახალი გუნდის წევრი
+                  </p>
                 </CardContent>
               </Card>
             </motion.div>
