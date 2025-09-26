@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { georgianContent } from "@/lib/georgian-content";
 import { MapPin, Phone, Mail, User } from "lucide-react";
 import giorgiPhoto from "@assets/WhatsApp Image 2025-08-01 at 23.37.17_17286ac2 (29)_1758894082230.jpg";
+import tornikePhoto from "@assets/1755198503835_1758901441709.png";
 
 export default function Contact() {
   const handleWhatsAppClick = () => {
@@ -162,7 +163,7 @@ export default function Contact() {
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 gap-8 justify-center max-w-4xl mx-auto">
             {/* Giorgi Natsvlishvili */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -198,21 +199,37 @@ export default function Contact() {
               </Card>
             </motion.div>
 
-            {/* Second team member placeholder for future */}
+            {/* Tornike Svimonishvili */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
               viewport={{ once: true }}
             >
-              <Card className="glass-card card-hover h-full border-dashed border-2 border-muted-foreground/20">
-                <CardContent className="p-6 text-center flex flex-col items-center justify-center h-full min-h-[300px]">
-                  <div className="w-16 h-16 bg-muted-foreground/10 rounded-full flex items-center justify-center mb-4">
-                    <User className="w-8 h-8 text-muted-foreground/40" />
+              <Card className="glass-card card-hover h-full">
+                <CardContent className="p-6 text-center">
+                  <div className="mb-6">
+                    <img 
+                      src={tornikePhoto} 
+                      alt="თორნიკე სვიმონიშვილი"
+                      className="w-32 h-32 rounded-full mx-auto object-cover border-4 border-primary/20"
+                      data-testid="img-tornike-photo"
+                    />
                   </div>
-                  <p className="text-muted-foreground/60 font-firago">
-                    მალე დაემატება<br/>ახალი გუნდის წევრი
-                  </p>
+                  <h3 className="text-xl font-semibold text-foreground mb-2 font-firago">
+                    თორნიკე სვიმონიშვილი
+                  </h3>
+                  
+                  <div className="space-y-3 mt-4">
+                    <div className="flex items-center justify-center space-x-3 text-muted-foreground">
+                      <Phone className="w-4 h-4" />
+                      <span className="font-firago" data-testid="text-tornike-phone">574201221</span>
+                    </div>
+                    <div className="flex items-center justify-center space-x-3 text-muted-foreground">
+                      <Mail className="w-4 h-4" />
+                      <span className="font-firago text-sm" data-testid="text-tornike-email">svimonishvilitoka@gmail.com</span>
+                    </div>
+                  </div>
                 </CardContent>
               </Card>
             </motion.div>

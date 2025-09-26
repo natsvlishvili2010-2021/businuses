@@ -104,7 +104,7 @@ export default function About() {
           </div>
 
           <motion.div 
-            className="grid md:grid-cols-3 gap-8"
+            className="grid md:grid-cols-2 gap-8 justify-center max-w-4xl mx-auto"
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
@@ -112,25 +112,18 @@ export default function About() {
           >
             {[
               {
-                name: "ალექს ღონღაძე",
-                role: "n8n Developer & Founder",
-                description: "5+ წლის გამოცდილება ავტომატიზაციისა და API ინტეგრაციების სფეროში",
-                avatar: "ა",
-                gradient: "from-primary to-secondary"
+                name: `თორნიკე სვიმონიშვილი`,
+                role: `n8n Developer & Co-Founder`,
+                description: `გამოცდილი დეველოპერი ავტომატიზაციისა და ღრუბლოვანი ტექნოლოგიების სფეროში`,
+                avatar: `თ`,
+                gradient: `from-primary to-secondary`
               },
               {
-                name: "მარიამ კვარაცხელია",
-                role: "Business Analyst",
-                description: "ექსპერტი ბიზნეს პროცესების ანალიზისა და ოპტიმიზაციის სფეროში",
-                avatar: "მ",
-                gradient: "from-secondary to-accent"
-              },
-              {
-                name: "დავით ჯაფარიძე",
-                role: "Technical Support Lead",
-                description: "უზრუნველყოფს 24/7 მხარდაჭერას და ტექნიკური პრობლემების მოგვარებას",
-                avatar: "დ",
-                gradient: "from-accent to-primary"
+                name: `გიორგი ნაცვლიშვილი`,
+                role: `Business Development & Co-Founder`,
+                description: `ექსპერტი ბიზნეს პროცესების ანალიზისა და ავტომატიზაციის სტრატეგიების შემუშავებაში`,
+                avatar: `გ`,
+                gradient: `from-secondary to-accent`
               }
             ].map((member, index) => (
               <motion.div
