@@ -27,6 +27,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Order management routes
   app.post("/api/orders", upload.array('files', 5), async (req, res) => {
     try {
+      console.log('Request body:', req.body);
+      console.log('Request files:', req.files);
       const orderData = insertOrderSchema.parse(req.body);
       
       // Handle file uploads
