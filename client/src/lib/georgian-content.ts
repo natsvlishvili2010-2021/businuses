@@ -4,6 +4,7 @@ export const georgianContent = {
     services: "სერვისები", 
     order: "შეკვეთა",
     about: "ჩვენ შესახებ",
+    team: "გუნდი",
     contact: "კონტაქტი"
   },
   

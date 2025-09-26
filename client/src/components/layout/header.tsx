@@ -14,6 +14,7 @@ export default function Header() {
     { name: georgianContent.nav.services, href: "/services" },
     { name: georgianContent.nav.order, href: "/order" },
     { name: georgianContent.nav.about, href: "/about" },
+    { name: georgianContent.nav.team, href: "/team" },
     { name: georgianContent.nav.contact, href: "/contact" },
   ];
 
