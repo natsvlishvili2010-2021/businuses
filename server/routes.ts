@@ -29,7 +29,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       console.log('Request body:', req.body);
       console.log('Request files:', req.files);
-      const orderData = insertOrderSchema.parse(req.body);
+      
+      // Parse JSON fields that come as strings from FormData
+      const parsedBody = { ...req.body };
+      if (parsedBody.integrations && typeof parsedBody.integrations === 'string') {
+        try {
+          parsedBody.integrations = JSON.parse(parsedBody.integrations);
+        } catch (e) {
+          console.error('Failed to parse integrations:', e);
+        }
+      }
+      if (parsedBody.hasCredentials && typeof parsedBody.hasCredentials === 'string') {
+        try {
+          parsedBody.hasCredentials = JSON.parse(parsedBody.hasCredentials);
+        } catch (e) {
+          console.error('Failed to parse hasCredentials:', e);
+        }
+      }
+      
+      const orderData = insertOrderSchema.parse(parsedBody);
       
       // Handle file uploads
       const files = req.files as Express.Multer.File[];
