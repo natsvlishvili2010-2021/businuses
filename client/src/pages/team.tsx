@@ -2,7 +2,8 @@ import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Phone, Mail, MessageCircle, Linkedin, Github } from "lucide-react";
+import { Phone, Mail, MessageCircle, Linkedin, Github, Copy } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 import giorgiPhoto from "@assets/WhatsApp Image 2025-08-01 at 23.37.17_17286ac2 (29)_1758894082230.jpg";
 import tornikePhoto from "@assets/1755198503835_1758901441709.png";
 
@@ -36,8 +37,22 @@ const teamMembers = [
 ];
 
 export default function Team() {
-  const handlePhoneCall = (phone: string) => {
-    window.open(`tel:+995${phone}`, '_self');
+  const { toast } = useToast();
+
+  const handleCopyPhone = async (phone: string) => {
+    try {
+      await navigator.clipboard.writeText(`+995${phone}`);
+      toast({
+        title: "ნომერი დაკოპირდა",
+        description: `+995${phone} დაკოპირდა`,
+      });
+    } catch (err) {
+      toast({
+        title: "შეცდომა",
+        description: "ნომერის კოპირება ვერ მოხერხდა",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleEmail = (email: string) => {
@@ -148,12 +163,12 @@ export default function Team() {
                       <Button
                         size="sm"
                         variant="outline"
-                        onClick={() => handlePhoneCall(member.phone)}
+                        onClick={() => handleCopyPhone(member.phone)}
                         className="flex-1 min-w-0 font-firago"
-                        data-testid={`button-call-${member.id}`}
+                        data-testid={`button-copy-phone-${member.id}`}
                       >
-                        <Phone className="w-4 h-4 mr-2" />
-                        დარეკვა
+                        <Copy className="w-4 h-4 mr-2" />
+                        ნომრის კოპირება
                       </Button>
                       <Button
                         size="sm"
