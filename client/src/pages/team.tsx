@@ -125,23 +125,7 @@ export default function Team() {
                       </div>
                     </div>
 
-                    {/* Languages */}
-                    <div className="mb-6">
-                      <h3 className="text-lg font-semibold text-foreground mb-3 font-firago">
-                        ენები
-                      </h3>
-                      <div className="flex flex-wrap gap-2">
-                        {member.languages.map((language, langIndex) => (
-                          <Badge 
-                            key={langIndex} 
-                            variant="secondary" 
-                            className="font-firago text-xs"
-                          >
-                            {language}
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
+                    
 
                     {/* Contact Information */}
                     <div className="space-y-3 mb-6">
