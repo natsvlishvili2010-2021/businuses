@@ -98,9 +98,6 @@ export default function Team() {
                       <p className="text-lg text-muted-foreground mb-3 font-firago">
                         {member.role}
                       </p>
-                      <Badge variant="secondary" className="font-firago">
-                        {member.experience}
-                      </Badge>
                     </div>
 
                     {/* Description */}
