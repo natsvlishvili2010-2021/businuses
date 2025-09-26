@@ -15,7 +15,7 @@ const teamMembers = [
     phone: "574099951",
     email: "giorginatsvlishvili2010@gmail.com",
     description: "ექსპერტი ბიზნეს პროცესების ანალიზისა და ავტომატიზაციის სტრატეგიების შემუშავებაში. ისარგებლოს მდიდარი გამოცდილებით კლიენტებთან მუშაობისა და ბიზნეს საჭიროებების იდენტიფიცირებაში.",
-    expertise: ["Business Analysis", "Client Relations", "Strategy Development", "Project Management"],
+    expertise: ["n8n Development", "API Integrations", "Workflow Automation", "Cloud Technologies"],
     experience: "3+ წლის გამოცდილება",
     languages: ["ქართული", "ინგლისური", "რუსული"],
     gradient: "from-primary to-secondary"
@@ -28,7 +28,7 @@ const teamMembers = [
     phone: "574201221",
     email: "svimonishvilitoka@gmail.com",
     description: "გამოცდილი დეველოპერი ავტომატიზაციისა და ღრუბლოვანი ტექნოლოგიების სფეროში. სპეციალიზირებულია n8n workflow-ების შექმნაში და რთული ინტეგრაციების განხორციელებაში.",
-    expertise: ["n8n Development", "API Integrations", "Workflow Automation", "Cloud Technologies"],
+    expertise: ["Business Analysis", "Client Relations", "Strategy Development", "Project Management"],
     experience: "4+ წლის გამოცდილება",
     languages: ["ქართული", "ინგლისური"],
     gradient: "from-secondary to-accent"
