@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { Link } from "wouter";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { georgianContent } from "@/lib/georgian-content";
@@ -253,11 +254,15 @@ export default function Contact() {
               დაგვიკავშირდით დღესვე და მიიღეთ უფასო კონსულტაცია თქვენი ბიზნესის ავტომატიზაციისთვის.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="font-firago" data-testid="button-start-project">
-                პროექტის დაწყება
+              <Button asChild size="lg" className="font-firago" data-testid="button-start-project">
+                <Link href="/order">
+                  პროექტის დაწყება
+                </Link>
               </Button>
-              <Button variant="outline" size="lg" className="font-firago" data-testid="button-consultation">
-                უფასო კონსულტაცია
+              <Button asChild variant="outline" size="lg" className="font-firago" data-testid="button-consultation">
+                <Link href="/contact">
+                  უფასო კონსულტაცია
+                </Link>
               </Button>
             </div>
           </motion.div>

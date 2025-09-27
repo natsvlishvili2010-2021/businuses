@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -255,11 +256,15 @@ export default function Services() {
               ჩვენ ვქმნით მორგებულ ავტომატიზაციებს ნებისმიერი სირთულის. მოგვწერეთ თქვენი საჭიროებების შესახებ.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="font-firago" data-testid="button-custom-order">
-                მორგებული შეკვეთა
+              <Button asChild size="lg" className="font-firago" data-testid="button-custom-order">
+                <Link href="/order">
+                  მორგებული შეკვეთა
+                </Link>
               </Button>
-              <Button variant="outline" size="lg" className="font-firago" data-testid="button-consultation">
-                უფასო კონსულტაცია
+              <Button asChild variant="outline" size="lg" className="font-firago" data-testid="button-consultation">
+                <Link href="/contact">
+                  უფასო კონსულტაცია
+                </Link>
               </Button>
             </div>
           </motion.div>
