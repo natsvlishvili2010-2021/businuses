@@ -1,15 +1,20 @@
-import { MailService } from '@sendgrid/mail';
+import nodemailer from 'nodemailer';
 
-let mailService: MailService | null = null;
+let transporter: nodemailer.Transporter | null = null;
 
-// Initialize SendGrid service
-if (process.env.SENDGRID_API_KEY) {
-  mailService = new MailService();
-  mailService.setApiKey(process.env.SENDGRID_API_KEY);
-  console.log("SendGrid email service initialized successfully");
+// Initialize Gmail SMTP transporter
+if (process.env.GMAIL_USER && process.env.GMAIL_APP_PASSWORD) {
+  transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: process.env.GMAIL_USER,
+      pass: process.env.GMAIL_APP_PASSWORD,
+    },
+  });
+  console.log("Gmail email service initialized successfully");
 } else {
-  console.warn("SendGrid API key not provided - email functionality will be disabled");
-  console.warn("Required: SENDGRID_API_KEY");
+  console.warn("Gmail credentials not provided - email functionality will be disabled");
+  console.warn("Required: GMAIL_USER (your gmail address) and GMAIL_APP_PASSWORD (app-specific password)");
 }
 
 interface EmailParams {
@@ -27,64 +32,35 @@ interface EmailParams {
 }
 
 export async function sendEmail(params: EmailParams): Promise<boolean> {
-  if (!mailService) {
+  if (!transporter) {
     console.warn('Email service not available - skipping email send');
     return false;
   }
   
   try {
-    const mailOptions: any = {
-      from: params.from || 'noreply@automation.ge',
-      to: Array.isArray(params.to) ? params.to[0] : params.to,
+    const mailOptions: nodemailer.SendMailOptions = {
+      from: params.from || process.env.GMAIL_USER,
+      to: params.to,
       subject: params.subject,
-      text: params.text || (params.html ? 'Please view this email in HTML format.' : 'No content'),
-      ...(params.html && { html: params.html }),
     };
     
-    // Handle attachments for SendGrid
-    if (params.attachments && params.attachments.length > 0) {
-      const fs = await import('fs');
-      mailOptions.attachments = await Promise.all(
-        params.attachments.map(async (attachment) => {
-          let content: string;
-          
-          if (attachment.content) {
-            // If content is provided directly
-            content = Buffer.isBuffer(attachment.content) 
-              ? attachment.content.toString('base64')
-              : Buffer.from(attachment.content).toString('base64');
-          } else if (attachment.path) {
-            // If file path is provided, read the file
-            const fileBuffer = await fs.promises.readFile(attachment.path);
-            content = fileBuffer.toString('base64');
-          } else {
-            throw new Error(`Attachment ${attachment.filename} has neither content nor path`);
-          }
-          
-          return {
-            filename: attachment.filename,
-            type: attachment.contentType || 'application/octet-stream',
-            content: content,
-          };
-        })
-      );
+    if (params.text) {
+      mailOptions.text = params.text;
     }
     
-    // Send to multiple recipients if needed
-    if (Array.isArray(params.to) && params.to.length > 1) {
-      await Promise.all(
-        params.to.map(email => 
-          mailService!.send({ ...mailOptions, to: email })
-        )
-      );
-    } else {
-      await mailService.send(mailOptions);
+    if (params.html) {
+      mailOptions.html = params.html;
+    }
+
+    if (params.attachments) {
+      mailOptions.attachments = params.attachments;
     }
     
-    console.log('Email sent successfully via SendGrid');
+    const info = await transporter.sendMail(mailOptions);
+    console.log('Email sent successfully:', info.messageId);
     return true;
   } catch (error) {
-    console.error('SendGrid email error:', error);
+    console.error('Gmail email error:', error);
     return false;
   }
 }
@@ -107,7 +83,7 @@ export async function sendOrderConfirmationEmail(
 
   return sendEmail({
     to: customerEmail,
-    from: 'orders@automation.ge',
+    from: process.env.GMAIL_USER,
     subject: georgianSubject,
     html: georgianHtml,
   });
@@ -372,7 +348,7 @@ export async function sendOrderNotificationEmail(
 
   return sendEmail({
     to: adminEmails,
-    from: 'notifications@automation.ge',
+    from: process.env.GMAIL_USER,
     subject,
     html,
   });
