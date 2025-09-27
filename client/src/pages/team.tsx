@@ -2,7 +2,8 @@ import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Phone, Mail, MessageCircle, Linkedin, Github, Copy } from "lucide-react";
+import { Phone, Mail, MessageCircle, Linkedin, Copy } from "lucide-react";
+import { SiFacebook } from "react-icons/si";
 import { useToast } from "@/hooks/use-toast";
 import giorgiPhoto from "@assets/WhatsApp Image 2025-08-01 at 23.37.17_17286ac2 (29)_1758894082230.jpg";
 import tornikePhoto from "@assets/1755198503835_1758901441709.png";
@@ -15,6 +16,8 @@ const teamMembers = [
     photo: giorgiPhoto,
     phone: "574099951",
     email: "giorginatsvlishvili2010@gmail.com",
+    linkedin: "https://www.linkedin.com/in/giorgi-natsvlishvili-026186220/",
+    facebook: "https://www.facebook.com/giorgi.natsvlishvili.342482",
     description: "ექსპერტი ბიზნეს პროცესების ანალიზისა და ავტომატიზაციის სტრატეგიების შემუშავებაში. ისარგებლოს მდიდარი გამოცდილებით კლიენტებთან მუშაობისა და ბიზნეს საჭიროებების იდენტიფიცირებაში.",
     expertise: ["n8n Development", "API Integrations", "Workflow Automation", "Cloud Technologies"],
     experience: "3+ წლის გამოცდილება",
@@ -28,6 +31,8 @@ const teamMembers = [
     photo: tornikePhoto,
     phone: "574201221",
     email: "svimonishvilitoka@gmail.com",
+    linkedin: "https://www.linkedin.com/in/tornike-svimonishvili-150865289/",
+    facebook: "https://www.facebook.com/tornike.svimonishvili.12",
     description: "გამოცდილი დეველოპერი ავტომატიზაციისა და ღრუბლოვანი ტექნოლოგიების სფეროში. სპეციალიზირებულია n8n workflow-ების შექმნაში და რთული ინტეგრაციების განხორციელებაში.",
     expertise: ["Business Analysis", "Client Relations", "Strategy Development", "Project Management"],
     experience: "4+ წლის გამოცდილება",
@@ -61,6 +66,14 @@ export default function Team() {
 
   const handleWhatsApp = (phone: string) => {
     window.open(`https://wa.me/995${phone}`, '_blank');
+  };
+
+  const handleLinkedIn = (linkedin: string) => {
+    window.open(linkedin, '_blank');
+  };
+
+  const handleFacebook = (facebook: string) => {
+    window.open(facebook, '_blank');
   };
 
   return (
@@ -189,6 +202,30 @@ export default function Team() {
                       >
                         <MessageCircle className="w-4 h-4 mr-2" />
                         WhatsApp
+                      </Button>
+                    </div>
+
+                    {/* Social Media Links */}
+                    <div className="flex gap-2 mt-4">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => handleLinkedIn(member.linkedin)}
+                        className="flex-1 bg-blue-600 hover:bg-blue-700 text-white border-blue-600 font-firago"
+                        data-testid={`button-linkedin-${member.id}`}
+                      >
+                        <Linkedin className="w-4 h-4 mr-2" />
+                        LinkedIn
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => handleFacebook(member.facebook)}
+                        className="flex-1 bg-blue-800 hover:bg-blue-900 text-white border-blue-800 font-firago"
+                        data-testid={`button-facebook-${member.id}`}
+                      >
+                        <SiFacebook className="w-4 h-4 mr-2" />
+                        Facebook
                       </Button>
                     </div>
                   </CardContent>
