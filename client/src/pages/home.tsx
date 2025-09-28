@@ -1,4 +1,5 @@
-import { useEffect, useRef } from "react";
+import { fetchData } from "@/services/api";
+import { useState, useEffect, useRef } from "react";
 import { Link } from "wouter";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -41,6 +42,14 @@ export default function Home() {
     return () => {
       observerRef.current?.disconnect();
     };
+  }, []);
+
+  const [data, setData] = useState<any>(null);
+
+  useEffect(() => {
+    fetchData()
+      .then((res: any) => setData(res))
+      .catch((err: any) => console.error(err));
   }, []);
 
   const containerVariants = {
@@ -105,6 +114,19 @@ export default function Home() {
                 </Link>
               </Button>
             </motion.div>
+
+            {/* API response preview (dev) */}
+            {data && (
+              <motion.div variants={itemVariants} className="mt-8 text-left">
+                <Card>
+                  <CardContent>
+                    <pre className="text-sm">
+                      {JSON.stringify(data, null, 2)}
+                    </pre>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            )}
 
             {/* Floating elements */}
             <div className="absolute top-20 left-10 animate-float hidden lg:block" style={{animationDelay: '1s'}}>
