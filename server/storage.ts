@@ -54,6 +54,14 @@ export class MemStorage implements IStorage {
       adminNotes: null,
       createdAt: now,
       updatedAt: now,
+  company: insertOrder.company ?? null,
+  customDescription: insertOrder.customDescription ?? null,
+  integrations: insertOrder.integrations ?? null,
+  hasCredentials: insertOrder.hasCredentials ?? null,
+  attachedFiles: insertOrder.attachedFiles ?? null,
+  exampleLink: insertOrder.exampleLink ?? null,
+  deliverySpeed: insertOrder.deliverySpeed ?? null,
+  priorityNotes: insertOrder.priorityNotes ?? null,
     };
     
     this.orders.set(id, order);

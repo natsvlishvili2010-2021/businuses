@@ -7,6 +7,8 @@ async function throwIfResNotOk(res: Response) {
   }
 }
 
+const API_BASE = (import.meta.env.VITE_API_URL as string) ?? "http://localhost:5000";
+
 export async function apiRequest(
   method: string,
   url: string,
@@ -25,7 +27,8 @@ export async function apiRequest(
     }
   }
 
-  const res = await fetch(url, {
+  const fullUrl = url.startsWith("http") ? url : `${API_BASE}${url}`;
+  const res = await fetch(fullUrl, {
     method,
     headers,
     body,
@@ -42,7 +45,9 @@ export const getQueryFn: <T>(options: {
 }) => QueryFunction<T> =
   ({ on401: unauthorizedBehavior }) =>
   async ({ queryKey }) => {
-    const res = await fetch(queryKey.join("/") as string, {
+    const path = queryKey.join("/") as string;
+    const full = path.startsWith("http") ? path : `${API_BASE}${path}`;
+    const res = await fetch(full, {
       credentials: "include",
     });
 

@@ -2,19 +2,33 @@ import nodemailer from 'nodemailer';
 
 let transporter: nodemailer.Transporter | null = null;
 
-// Initialize Gmail SMTP transporter
-if (process.env.GMAIL_USER && process.env.GMAIL_APP_PASSWORD) {
-  transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: process.env.GMAIL_USER,
-      pass: process.env.GMAIL_APP_PASSWORD,
-    },
-  });
-  console.log("Gmail email service initialized successfully");
-} else {
-  console.warn("Gmail credentials not provided - email functionality will be disabled");
-  console.warn("Required: GMAIL_USER (your gmail address) and GMAIL_APP_PASSWORD (app-specific password)");
+// Lazily initialize the transporter so dotenv has a chance to run before we read process.env
+async function ensureTransporter(): Promise<nodemailer.Transporter | null> {
+  if (transporter) return transporter;
+
+  if (process.env.GMAIL_USER && process.env.GMAIL_APP_PASSWORD) {
+    transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.GMAIL_USER,
+        pass: process.env.GMAIL_APP_PASSWORD,
+      },
+    });
+
+    try {
+      // verify will attempt to connect and authenticate
+      await transporter.verify();
+      console.log('Gmail email service initialized successfully');
+    } catch (err) {
+      console.error('Failed to verify Gmail transporter:', err);
+      transporter = null;
+    }
+  } else {
+    console.warn('Gmail credentials not provided - email functionality will be disabled');
+    console.warn('Required: GMAIL_USER (your gmail address) and GMAIL_APP_PASSWORD (app-specific password)');
+  }
+
+  return transporter;
 }
 
 interface EmailParams {
@@ -32,6 +46,8 @@ interface EmailParams {
 }
 
 export async function sendEmail(params: EmailParams): Promise<boolean> {
+  await ensureTransporter();
+
   if (!transporter) {
     console.warn('Email service not available - skipping email send');
     return false;
@@ -260,7 +276,7 @@ export async function sendOrderNotificationEmail(
           </div>
           ${order.exampleLink ? `
           <div>
-            <strong>მაგალითის ლინკი:</strong><br>
+            <strong>მაგალიტის ლინკი:</strong><br>
             <a href="${order.exampleLink}" style="color: #667eea; word-break: break-all;" target="_blank">${order.exampleLink}</a>
           </div>
           ` : ''}
@@ -352,4 +368,27 @@ export async function sendOrderNotificationEmail(
     subject,
     html,
   });
+}
+
+export async function testGmailSMTPConnection(): Promise<void> {
+  await ensureTransporter();
+
+  if (!transporter) {
+    console.warn('Email service not available - skipping SMTP test');
+    return;
+  }
+
+  try {
+    const testEmail = {
+      from: process.env.GMAIL_USER,
+      to: process.env.GMAIL_USER, // Sending to self for testing
+      subject: 'SMTP Test Email',
+      text: 'This is a test email to verify Gmail SMTP connection.',
+    };
+
+    const info = await transporter.sendMail(testEmail);
+    console.log('Test email sent successfully:', info.messageId);
+  } catch (error) {
+    console.error('Error during SMTP test:', error);
+  }
 }

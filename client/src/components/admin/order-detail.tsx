@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import type { Order } from "@shared/schema";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -31,7 +32,7 @@ export default function OrderDetail({ orderId }: OrderDetailProps) {
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
-  const { data: order, isLoading } = useQuery({
+  const { data: order, isLoading } = useQuery<Order>({
     queryKey: ['/api/orders', orderId],
     enabled: !!orderId,
   });
@@ -120,14 +121,14 @@ export default function OrderDetail({ orderId }: OrderDetailProps) {
       <div className="space-y-2">
         <div className="flex items-center justify-between">
           <h3 className="font-semibold text-lg">{order.orderId}</h3>
-          <Badge className={getStatusColor(order.status)}>
-            {getStatusLabel(order.status)}
+          <Badge className={getStatusColor(order.status ?? "new")}>
+            {getStatusLabel(order.status ?? "new")}
           </Badge>
         </div>
         <p className="text-sm text-muted-foreground flex items-center gap-2">
           <Calendar className="w-4 h-4" />
-          Created {formatDistance(new Date(order.createdAt), new Date(), { addSuffix: true })}
-          {order.updatedAt !== order.createdAt && (
+          Created {order.createdAt ? formatDistance(new Date(order.createdAt), new Date(), { addSuffix: true }) : ""}
+          {order.updatedAt && order.createdAt && order.updatedAt !== order.createdAt && (
             <span>
               • Updated {formatDistance(new Date(order.updatedAt), new Date(), { addSuffix: true })}
             </span>
@@ -218,7 +219,7 @@ export default function OrderDetail({ orderId }: OrderDetailProps) {
       </div>
 
       {/* Files */}
-      {order.attachedFiles && order.attachedFiles.length > 0 && (
+      {Array.isArray(order.attachedFiles) && order.attachedFiles.length > 0 && (
         <>
           <Separator />
           <div className="space-y-3">
@@ -276,7 +277,7 @@ export default function OrderDetail({ orderId }: OrderDetailProps) {
       {/* Status Update */}
       <div className="space-y-3">
         <h4 className="font-medium">Update Status</h4>
-        <Select value={order.status} onValueChange={handleStatusUpdate}>
+        <Select value={order.status ?? "new"} onValueChange={handleStatusUpdate}>
           <SelectTrigger data-testid="select-order-status">
             <SelectValue />
           </SelectTrigger>
@@ -298,7 +299,7 @@ export default function OrderDetail({ orderId }: OrderDetailProps) {
         </h4>
         <Textarea
           placeholder="Add internal notes about this order..."
-          value={adminNotes || order.adminNotes || ""}
+          value={adminNotes || (order.adminNotes ?? "")}
           onChange={(e) => setAdminNotes(e.target.value)}
           className="min-h-[100px]"
           data-testid="textarea-admin-notes"
@@ -325,7 +326,7 @@ export default function OrderDetail({ orderId }: OrderDetailProps) {
         <Button 
           variant="outline" 
           size="sm"
-          onClick={() => window.open(`mailto:${order.email}?subject=Your Order ${order.orderId}`, '_blank')}
+          onClick={() => window.open(`mailto:${order.email ?? ""}?subject=Your Order ${order.orderId ?? ""}`, '_blank')}
           data-testid="button-email-customer"
         >
           <Mail className="w-4 h-4 mr-2" />
@@ -336,7 +337,7 @@ export default function OrderDetail({ orderId }: OrderDetailProps) {
           variant="outline" 
           size="sm"
           onClick={() => {
-            const orderDetails = `Order ID: ${order.orderId}\nCustomer: ${order.fullName}\nProject: ${order.projectName}\nStatus: ${getStatusLabel(order.status)}`;
+            const orderDetails = `Order ID: ${order.orderId ?? ""}\nCustomer: ${order.fullName ?? ""}\nProject: ${order.projectName ?? ""}\nStatus: ${getStatusLabel(order.status ?? "new")}`;
             navigator.clipboard.writeText(orderDetails);
             toast({
               title: "Copied",
