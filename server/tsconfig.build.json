@@ -5,7 +5,8 @@
     "rootDir": "./src",
     "declaration": false,
     "noEmit": false,
-    "module": "CommonJS" 
+    "module": "CommonJS",       
+    "esModuleInterop": true     
   },
   "include": ["src/**/*"]
 }
