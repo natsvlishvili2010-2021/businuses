@@ -3,7 +3,8 @@
   "compilerOptions": {
     "outDir": "./dist",
     "rootDir": "./src",
-    "declaration": false
+    "declaration": false,
+    "noEmit": false    // 🔥 ეს გადაფარავს root noEmit-ს
   },
   "include": ["src/**/*"]
 }
