@@ -4,7 +4,7 @@
     "outDir": "./dist",
     "rootDir": "./src",
     "declaration": false,
-    "noEmit": false    // 🔥 ეს გადაფარავს root noEmit-ს
+    "noEmit": false   
   },
   "include": ["src/**/*"]
 }
