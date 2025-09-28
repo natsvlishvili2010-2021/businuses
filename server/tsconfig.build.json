@@ -5,8 +5,9 @@
     "rootDir": "./src",
     "declaration": false,
     "noEmit": false,
-    "module": "CommonJS",       
-    "esModuleInterop": true     
+    "allowImportingTsExtensions": false,
+    "module": "commonjs",                // 🔥 გადავაყვანეთ CommonJS
+    "moduleResolution": "node"           // 🔥 bundler-ს გადავაფარეთ
   },
   "include": ["src/**/*"]
 }
