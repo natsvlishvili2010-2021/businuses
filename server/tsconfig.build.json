@@ -5,9 +5,9 @@
     "rootDir": "./src",
     "declaration": false,
     "noEmit": false,
+    "allowImportingTsExtensions": false,
     "module": "commonjs",
-    "moduleResolution": "node",
-    "esModuleInterop": true
+    "moduleResolution": "node"
   },
   "include": ["src/**/*"]
 }
