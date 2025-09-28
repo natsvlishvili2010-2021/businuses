@@ -5,7 +5,7 @@
     "rootDir": "./src",
     "declaration": false,
     "noEmit": false,
-    "allowImportingTsExtensions": false
+    "module": "CommonJS" 
   },
   "include": ["src/**/*"]
 }
